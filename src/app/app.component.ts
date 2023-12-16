@@ -20,12 +20,6 @@ export class AppComponent implements OnInit {
 		this.db.getStations().then(stations => {
 			console.log(stations);
 			this.stations = stations;
-
-			for (const station of stations) {
-				this.db.getMeasurements(station).then(measurements => {
-					console.log(measurements);
-				});
-			}
 		});
 	}
 }

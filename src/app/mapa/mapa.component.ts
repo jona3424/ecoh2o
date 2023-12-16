@@ -104,19 +104,12 @@ export class MapaComponent {
  }
  @ViewChildren(MapInfoWindow) infoWindowsView !: QueryList<MapInfoWindow>;
 
+ a = [0,1];
+
  openInfoWindow(marker: MapMarker, windowIndex: number) {
-   /// stores the current index in forEach
-   let curIdx = 0;
    console.log(windowIndex);
    this.infoWindowsView.get(windowIndex)?.open(marker);
-  //  this.infoWindowsView.forEach((window: MapInfoWindow) => {
-  //    if (windowIndex === curIdx) {
-  //      window.open(marker);
-  //      curIdx++;
-  //    } else {
-  //      curIdx++;
-  //    }
-  //  });
+
  }
 
 }

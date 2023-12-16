@@ -1,9 +1,12 @@
 import { FirestoreDataConverter, GeoPoint } from "firebase/firestore";
+import Measurement from "./measurement";
 
 export default interface Station {
 	id: string;
 	name: string;
 	location: GeoPoint;
+
+	latest_measurement?: Measurement;
 }
 
 export const stationConverter : FirestoreDataConverter<Station> = {
