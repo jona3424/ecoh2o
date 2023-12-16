@@ -63,7 +63,7 @@ export class DatabaseService {
 
 	async getMeasurements(station: Station) : Promise<Measurement[]> {
 		const coll = collection(db, `stations/${station.id}/measurements`).withConverter(measurementConverter);
-		const { docs } = await getDocs(coll);
+		const { docs } = await getDocs(query(coll, orderBy("created_at", "desc")));
 
 		const measurements = docs.map(doc => doc.data());
 		measurements.forEach(validateMeasurement);

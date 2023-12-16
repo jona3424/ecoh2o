@@ -5,6 +5,15 @@ import { DatabaseService } from "../services/database.service";
 import Measurement from "../models/measurement";
 import { FormControl, FormGroup } from "@angular/forms";
 import allowedRanges from "src/allowed_ranges";
+
+
+class Latest{
+	field: string = "";
+	value: number = 0;
+	icon: string = "happy.svg";
+	color: string = "green";
+	increase: number = 0;
+}
 @Component({
 	selector: 'app-station-dashboard',
 	templateUrl: './station-dashboard.component.html',
@@ -21,7 +30,6 @@ export class StationDashboardComponent implements OnInit {
 	public data: any;
 	public clicked: boolean = true;
 	public clicked1: boolean = false;
-
 
 	private readonly stationId: string;
 	public station?: Station;
@@ -45,11 +53,18 @@ export class StationDashboardComponent implements OnInit {
 		return this.allMeasurements.filter(measurement => measurement.created_at >= start! && measurement.created_at <= end!);
 	}
 
+	public subLatestMeas !: Measurement;
+
+	top_row : Latest[] = [];
+	keys : string[] = [];
+
+	chart_field: string = "ph";
+
 	public constructor(activatedRoute: ActivatedRoute, private readonly database: DatabaseService) {
 		this.stationId = activatedRoute.snapshot.params.id;
 	}
 
-	dps = [{ x: 1, y: 10 }, { x: 2, y: 13 }, { x: 3, y: 18 }, { x: 4, y: 20 }, { x: 5, y: 17 }, { x: 6, y: 10 }, { x: 7, y: 13 }, { x: 8, y: 18 }, { x: 9, y: 20 }, { x: 10, y: 17 }];
+	dps = [{ x: new Date(Date.UTC (2012, 1, 1, 1,0) ), y: 10 }];
 	chart: any;
 
 	chartOptions = {
@@ -63,6 +78,8 @@ export class StationDashboardComponent implements OnInit {
 		backgroundColor: "#042530",
 		data: [{
 			type: "spline",
+
+			xValueType: "dateTime",
 			lineColor: "#2180ab",
 			markerColor: "#2180ab", lineThickness: 3,
 			dataPoints: this.dps
@@ -71,18 +88,31 @@ export class StationDashboardComponent implements OnInit {
 	getChartInstance(chart: object) {
 		this.chart = chart;
 	}
+	
+
+	getData(meas: Measurement | undefined, data: string){
+		if(!meas) {
+			if(!this.station) return 0;
+			meas = this.station.latest_measurement;
+		}
+		if(!meas) return 0;
+		// var vals = Object.values(meas.properties);
+		var vals = meas.properties[data];
+		let index = this.keys.indexOf(data);
+		if(index == -1) return 0;
+		return Math.floor(vals);
+	}
 
 
-	reloadChar(): void{
-		
-		if (!this.station || !this.allMeasurements) return;
+	reloadChart(): void{
+		if (!this.station || !this.measurements) return;
 
 		this.dps = []
 
-		for(let meas of this.allMeasurements){
-			this.dps.push( {x : 1, y : 2} );
+		for(let meas of this.measurements){
+			this.dps.push({x:meas.created_at,y:this.getData(meas, this.chart_field)});
 		}
-
+		this.chartOptions.data[0].dataPoints = this.dps
 		this.chart.render();
 	}
 
@@ -94,13 +124,64 @@ export class StationDashboardComponent implements OnInit {
 			this.station = station;
 			this.database.getMeasurements(station).then(measurements => {
 				this.allMeasurements = measurements;
-				if (this.station)
+				if (this.station){
 					this.station.latest_measurement = this.allMeasurements[this.allMeasurements.length - 1];
+
+					try{
+
+						this.subLatestMeas = this.allMeasurements[this.allMeasurements.length -2];
+
+					}catch(error){
+
+					}
+
+					this.keys = Object.keys(this.station.latest_measurement.properties).sort()
+					this.chart_field = this.keys[0];
+					this.fillTopRow();
+					this.reloadChart();
+				}
 			});
 		});
 	}
 
 	public getMetricNames(): string[] {
 		return Object.keys(allowedRanges);
+	}
+
+	fillTopRow(){
+		if(!this.station) return;
+		if(!this.station.latest_measurement) return;
+		if(!this.subLatestMeas) return;
+		for(let key of this.keys){
+			var data = this.getData(this.station.latest_measurement, key);
+
+			var noviTR = new Latest();
+			noviTR.value = data;
+			noviTR.field = key;
+
+
+			var ranges = allowedRanges[key];
+			if(ranges.max && data > ranges.max * 1.1) {
+				noviTR.color = "red";
+				noviTR.icon = "sad.svg";
+			  }else if (ranges.max && data > ranges.max){
+				noviTR.color = "#ffcc00";
+				noviTR.icon = "meh.svg";
+			  }
+
+			  if(ranges.min && data < ranges.min * 0.9) {
+				noviTR.color = "red";
+				noviTR.icon = "sad.svg";
+			  }else if (ranges.min && data < ranges.min){
+				noviTR.color = "#ffcc00";
+				noviTR.icon = "meh.svg";
+			  }
+			
+			var slm = this.getData(this.subLatestMeas, key);
+			if(slm != 0 ){
+			noviTR.increase = (data-slm)*100/slm;
+			noviTR.increase = Math.round(noviTR.increase * 100) / 100
+			}this.top_row.push(noviTR);
+		}
 	}
 }
