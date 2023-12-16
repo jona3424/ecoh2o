@@ -4,6 +4,7 @@ import Station from "../models/station";
 import { DatabaseService } from "../services/database.service";
 import Measurement from "../models/measurement";
 import { FormControl, FormGroup } from "@angular/forms";
+import allowedRanges from "src/allowed_ranges";
 @Component({
 	selector: 'app-station-dashboard',
 	templateUrl: './station-dashboard.component.html',
@@ -24,7 +25,25 @@ export class StationDashboardComponent implements OnInit {
 
 	private readonly stationId: string;
 	public station?: Station;
-	public measurements?: Measurement[]
+	public allMeasurements?: Measurement[];
+	public get measurements(): Measurement[] | undefined {
+		if (!this.allMeasurements)
+			return undefined;
+
+		let start = this.range.value.start;
+		let end = this.range.value.end;
+
+		if (!start && !end)
+			return this.allMeasurements;
+
+		if (!start)
+			start = new Date(0);
+
+		if (!end)
+			end = new Date();
+
+		return this.allMeasurements.filter(measurement => measurement.created_at >= start! && measurement.created_at <= end!);
+	}
 
 	public constructor(activatedRoute: ActivatedRoute, private readonly database: DatabaseService) {
 		this.stationId = activatedRoute.snapshot.params.id;
@@ -56,11 +75,11 @@ export class StationDashboardComponent implements OnInit {
 
 	reloadChar(): void{
 		
-		if (!this.station || !this.measurements) return;
+		if (!this.station || !this.allMeasurements) return;
 
 		this.dps = []
 
-		for(let meas of this.measurements){
+		for(let meas of this.allMeasurements){
 			this.dps.push( {x : 1, y : 2} );
 		}
 
@@ -74,12 +93,14 @@ export class StationDashboardComponent implements OnInit {
 
 			this.station = station;
 			this.database.getMeasurements(station).then(measurements => {
-				this.measurements = measurements;
+				this.allMeasurements = measurements;
 				if (this.station)
-					this.station.latest_measurement = this.measurements[this.measurements.length - 1];
+					this.station.latest_measurement = this.allMeasurements[this.allMeasurements.length - 1];
 			});
 		});
 	}
 
-
+	public getMetricNames(): string[] {
+		return Object.keys(allowedRanges);
+	}
 }
