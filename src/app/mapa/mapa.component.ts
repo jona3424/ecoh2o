@@ -108,14 +108,15 @@ export class MapaComponent {
    /// stores the current index in forEach
    let curIdx = 0;
    console.log(windowIndex);
-   this.infoWindowsView.forEach((window: MapInfoWindow) => {
-     if (windowIndex === curIdx) {
-       window.open(marker);
-       curIdx++;
-     } else {
-       curIdx++;
-     }
-   });
+   this.infoWindowsView.get(windowIndex)?.open(marker);
+  //  this.infoWindowsView.forEach((window: MapInfoWindow) => {
+  //    if (windowIndex === curIdx) {
+  //      window.open(marker);
+  //      curIdx++;
+  //    } else {
+  //      curIdx++;
+  //    }
+  //  });
  }
 
 }

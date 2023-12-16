@@ -1,9 +1,14 @@
 <div class="my-google-map">
     <google-map [options]="mapOptions">
+        <map-marker #marker="mapMarker" [position]="markeri.position"  (mapClick)="openInfoWindow(marker, 0)">
+            <map-info-window> Content of ...</map-info-window>
+        </map-marker>
 
 
-        <map-marker #marker="mapMarker" [position]="markeriA.position"  (mapClick)="openInfoWindow(marker, 0)">
-        <map-info-window #niga> Aaaaa</map-info-window></map-marker>
+
+        <map-marker #marker="mapMarker" [position]="markeriA.position"  (mapClick)="openInfoWindow(marker, 1)">
+            <map-info-window> Aaaaa</map-info-window>
+        </map-marker>
 
     </google-map>
   </div>
