@@ -1,33 +1,24 @@
-<div class="container mt-5 mb-3">
-    <div class="row">
-            <div class="card p-3 mb-2">
-                <div class="d-flex justify-content-between">
-                    <div class="d-flex flex-row align-items-center">
-                        <div class="ms-2 c-details">
-
-                            <h3 class="heading">{{stanica.name}}</h3> <span>{{kad}}</span>
-                        </div>
-                    </div>
-                    <div class="badge" [class]="badge_class"> <span>{{ badge_text }}</span> </div>
-                </div>
-                <div class="mt-5">
-
-                    <span *ngFor="let prop of prop_kriticno">
-                        <h6 class="mb-0">{{prop.field}}</h6> <span [style.color]="prop.critical">{{prop.text}}</span> <br>
-                    </span>
-                    <span *ngFor="let prop of prop_prihvatljivo">
-                        <h6 class="mb-0">{{prop.field}}</h6> <span [style.color]="'rgb(210, 168, 0)'">{{prop.text}}</span> <br>
-                    </span>
-                    <span *ngIf="count_bad == 0 && count_maybe == 0 && count_all != 0;" style="color:green">Voda je ispravna po svim kriterijumima</span>
-                    <div class="mt-5">
-                        <!-- <div class="progress">
-                            <div class="progress-bar" role="progressbar" [style.width]="(count_bad)*100/count_all+'%'" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                            <div *ngIf="count_maybe!=0" class="progress-bar yellow_bar" role="progressbar" [style.width]="(count_maybe)*100/count_all+'%'" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div> -->
-                        <div class="mt-3"> <a [routerLink]="'station/'+stanica.id" class="text1 text2">detaljnije...</a> </div>
-                    </div>
-                </div>
-            </div>
-        
+ <div class="card">
+    <h3 class="heading">{{stanica.name}}</h3> 
+    <div class="details">
+        <span class="float-left">{{ stanica.latest_measurement?.created_at | date:"dd.MM.yyyy. 'u' hh:mm" }}</span>
+        <span class="badge float-right" [class]="badge_class">{{ badge_text }}</span>
     </div>
+
+    <div class="my-3">
+        <span *ngFor="let prop of prop_kriticno">
+            <h6 class="mb-0">{{prop.field}}</h6> <span [style.color]="prop.critical">{{prop.text}}</span> <br>
+        </span>
+        <span *ngFor="let prop of prop_prihvatljivo">
+            <h6 class="mb-0">{{prop.field}}</h6> <span [style.color]="'rgb(210, 168, 0)'">{{prop.text}}</span> <br>
+        </span>
+        <span *ngIf="count_bad == 0 && count_maybe == 0 && count_all != 0;" style="color:green">Voda je ispravna</span>
+        <!-- <div class="mt-5">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" [style.width]="(count_bad)*100/count_all+'%'" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                <div *ngIf="count_maybe!=0" class="progress-bar yellow_bar" role="progressbar" [style.width]="(count_maybe)*100/count_all+'%'" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </div> -->
+    </div>
+    <a [routerLink]="'station/'+stanica.id" class="text1 text2">Više detalja...</a>
 </div>

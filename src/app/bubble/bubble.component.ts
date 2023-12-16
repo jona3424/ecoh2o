@@ -28,7 +28,6 @@ export class BubbleComponent implements OnInit{
   fields : string[] = [];
   values : number[] = [];
 
-  kad : string = "";
   badge_class : string = "";
   badge_text : string = "Opasno";
 
@@ -76,15 +75,21 @@ export class BubbleComponent implements OnInit{
             this.prop_array.push(noviProp);
           // }
       }    
-      
-      this.kad = this.stanica.latest_measurement.created_at.toLocaleDateString('sr-RS');
-      if(this.stanica.latest_measurement.status == Status.OK){
-        this.badge_class = "green";
+
+      switch (this.stanica.latest_measurement.status) {
+      case Status.OK:
+        this.badge_class = "badge-success";
         this.badge_text = "Sigurno";
-      } if(this.stanica.latest_measurement.status == Status.Warning){
-        this.badge_class = "yellow";
+        break;
+      case Status.Warning:
+        this.badge_class = "badge-warning";
         this.badge_text = "Prihvatljivo";
-      }      
+        break;
+      case Status.Critical:
+        this.badge_class = "badge-danger";
+        this.badge_text = "Opasno";
+        break;
+      }
     }
   }
 
