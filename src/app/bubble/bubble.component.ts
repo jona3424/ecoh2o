@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import Station from '../models/station';
-import { Properties } from '../models/measurement';
+import { Properties, Status } from '../models/measurement';
 import allowed_ranges, { bitne_metrike } from '../../allowed_ranges';
 
 class Prop{
   field : string = "";
   value : number = 0;
-  critical : boolean = false;
+  critical : string = "green";
 }
 
 @Component({
@@ -26,9 +26,11 @@ export class BubbleComponent implements OnInit{
   values : number[] = [];
 
   kad : string = "";
-  red : boolean = false;
+  badge_class : string = "";
+  badge_text : string = "Opasno";
 
-  count_gucci = 0;
+  count_bad = 0;
+  count_maybe = 0;
 
   ngOnInit(){
     if(this.stanica.latest_measurement){
@@ -43,17 +45,35 @@ export class BubbleComponent implements OnInit{
           noviProp.value = vals[i];
 
           var ranges = allowed_ranges[noviProp.field];
-          noviProp.critical = false;
-          if(ranges.max && ranges.max < noviProp.value) noviProp.critical = true;
-          if(ranges.min && ranges.min > noviProp.value) noviProp.critical = true;
+          noviProp.critical = "green";
+          if(ranges.max && noviProp.value > ranges.max * 1.1) {
+            noviProp.critical = "red";
+            this.count_bad++;
+          }else if (ranges.max && noviProp.value > ranges.max){
+            noviProp.critical = "#ffcc00";
+            this.count_maybe++;
+          }
 
-          if(noviProp.critical == false) this.count_gucci++;
+          if(ranges.min && noviProp.value < ranges.min * 0.9) {
+            noviProp.critical = "red";
+            this.count_bad++;
+          }else if (ranges.min && noviProp.value < ranges.min){
+            noviProp.critical = "#ffcc00";
+            this.count_maybe++;
+          }
+
           this.prop_array.push(noviProp);
         }
       }    
       
       this.kad = this.stanica.latest_measurement.created_at.toLocaleDateString('sr-RS');
-      this.red = this.stanica.latest_measurement.status;      
+      if(this.stanica.latest_measurement.status == Status.OK){
+        this.badge_class = "green";
+        this.badge_text = "Sigurno";
+      } if(this.stanica.latest_measurement.status == Status.Warning){
+        this.badge_class = "yellow";
+        this.badge_text = "Prihvatljivo";
+      }      
     }
   }
 

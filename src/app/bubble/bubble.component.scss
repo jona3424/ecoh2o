@@ -42,9 +42,13 @@ h6{
 
 .progress {
     height: 10px;
-    border-radius: 10px
+    border-radius: 10px;
+    background-color: #22c400;
 }
+.yellow_bar{
 
+    background-color: #ffcc00 !important;
+}
 .progress div {
     background-color: red
 }
@@ -61,4 +65,9 @@ h6{
 .green span{
     background-color: #ecfff6 !important;
     color: #007a1f !important;
+}
+
+.yellow span{
+    background-color: #fffbec !important;
+    color: #7a6400 !important;
 }
