@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MapaComponent } from './mapa/mapa.component';
+import { GoogleMapsModule } from '@angular/google-maps'
 
 @NgModule({
   declarations: [
@@ -12,6 +13,7 @@ import { MapaComponent } from './mapa/mapa.component';
   ],
   imports: [
     BrowserModule,
+    GoogleMapsModule,
     AppRoutingModule
   ],
   providers: [],
