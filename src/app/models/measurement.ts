@@ -5,11 +5,17 @@ export interface Properties {
 	[name: string]: number;
 }
 
+export enum Status {
+	OK,
+	Warning,
+	Critical
+}
+
 export default interface Measurement {
 	id: string;
 	created_at: Date;
 	properties: Properties;
-	status: boolean;
+	status: Status;
 }
 
 export const measurementConverter : FirestoreDataConverter<Measurement> = {
@@ -31,6 +37,8 @@ export const measurementConverter : FirestoreDataConverter<Measurement> = {
 }
 
 export function validateMeasurement(measurement: Measurement) {
+	measurement.status = Status.OK;
+
 	for (const property in measurement.properties) {
 		if (!(property in allowedRanges)) {
 			console.error(`Measurement has unknown property ${property}`);
@@ -40,11 +48,13 @@ export function validateMeasurement(measurement: Measurement) {
 		const value = measurement.properties[property];
 		
 		const { min, max } = allowedRanges[property];
-		if (min !== undefined && value < min || max !== undefined && value > max) {
-			measurement.status = false;
+		if (min !== undefined && value < min * 0.9 || max !== undefined && value > max * 1.1)  {
+			measurement.status = Status.Critical;
 			return;
 		}
+		
+		if (min !== undefined && value < min || max !== undefined && value > max) {
+			measurement.status = Status.Warning;
+		}
 	}
-
-	measurement.status = true;
 }
