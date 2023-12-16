@@ -4,12 +4,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MapaComponent } from './mapa/mapa.component';
-import { GoogleMapsModule } from '@angular/google-maps'
+import { GoogleMapsModule } from '@angular/google-maps';
+import { BubbleComponent } from './bubble/bubble.component'
 
 @NgModule({
   declarations: [
     AppComponent,
-    MapaComponent
+    MapaComponent,
+    BubbleComponent
   ],
   imports: [
     BrowserModule,

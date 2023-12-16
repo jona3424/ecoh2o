@@ -110,9 +110,7 @@ export class MapaComponent {
  @ViewChildren(MapInfoWindow) infoWindowsView !: QueryList<MapInfoWindow>;
 
  openInfoWindow(marker: MapMarker, windowIndex: number) {
-   console.log(windowIndex);
    this.infoWindowsView.get(windowIndex)?.open(marker);
-
  }
 
  stations : Station[] | undefined;
