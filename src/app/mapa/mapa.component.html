@@ -1,6 +1,6 @@
-<div class="my-google-map">
+<div *ngIf="stations != null" class="my-google-map">
     <google-map [options]="mapOptions">
-        <map-marker *ngFor="let i of a" #marker="mapMarker" [position]="markeri.position"  (mapClick)="openInfoWindow(marker, i)">
+        <map-marker *ngFor="let stanica of stations; let i = index" #marker="mapMarker" [position]="stanica.location"  (mapClick)="openInfoWindow(marker, i)">
             <map-info-window> Content of ...</map-info-window>
         </map-marker>
 

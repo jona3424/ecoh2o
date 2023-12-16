@@ -1,10 +1,10 @@
-import { FirestoreDataConverter, GeoPoint } from "firebase/firestore";
+import { FirestoreDataConverter } from "firebase/firestore";
 import Measurement from "./measurement";
 
 export default interface Station {
 	id: string;
 	name: string;
-	location: GeoPoint;
+	location: google.maps.LatLng;
 
 	latest_measurement?: Measurement;
 }
@@ -21,6 +21,7 @@ export const stationConverter : FirestoreDataConverter<Station> = {
 		return {
 			id: snapshot.id,
 			...data,
+			location: new google.maps.LatLng(data.location.latitude, data.location.longitude)
 		}
 	}
 }

@@ -1,6 +1,8 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
 
 import {MapInfoWindow, MapMarker} from '@angular/google-maps'
+import Station from '../models/station';
+import { DatabaseService } from '../services/database.service';
 
 @Component({
   selector: 'app-mapa',
@@ -17,7 +19,7 @@ export class MapaComponent {
 }
 
   mapOptions: google.maps.MapOptions = {
-    center: { lat: 44.7988288, lng: 20.3674271 },
+    center: { lat: 44.7811458, lng: 20.3697531},
     zoom : 14,
     styles: [
       {
@@ -104,12 +106,22 @@ export class MapaComponent {
  }
  @ViewChildren(MapInfoWindow) infoWindowsView !: QueryList<MapInfoWindow>;
 
- a = [0,1];
-
  openInfoWindow(marker: MapMarker, windowIndex: number) {
    console.log(windowIndex);
    this.infoWindowsView.get(windowIndex)?.open(marker);
 
  }
 
+ stations : Station[] | undefined;
+
+	constructor(private readonly db: DatabaseService) {
+
+	}
+
+	ngOnInit(): void {
+		this.db.getStations().then(stations => {
+			console.log(stations);
+			this.stations = stations;
+		});
+	}
 }
