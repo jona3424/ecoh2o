@@ -2,7 +2,11 @@
 <div *ngIf="stations != null" class="my-google-map">
     <google-map [width]="null" [height]="null" [options]="mapOptions">
         <map-marker *ngFor="let stanica of stations; let i = index" #marker="mapMarker" [position]="stanica.location"  (mapClick)="openInfoWindow(marker, i)">
-            <map-info-window> {{stanica.latest_measurement?.status}}</map-info-window>
+            <map-info-window> 
+
+                <app-bubble [stanica]="stanica"></app-bubble>
+
+            </map-info-window>
         </map-marker>
 
     </google-map>

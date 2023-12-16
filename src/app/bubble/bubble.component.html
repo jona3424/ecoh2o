@@ -1,0 +1,27 @@
+<div class="container mt-5 mb-3">
+    <div class="row">
+            <div class="card p-3 mb-2">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-row align-items-center">
+                        <div class="ms-2 c-details">
+
+                            <h3 class="heading">{{stanica.name}}</h3> <span>{{kad}}</span>
+                        </div>
+                    </div>
+                    <div class="badge" [class.green]="red"> <span>{{ !red ? 'Opasno' : 'Zdravo' }}</span> </div>
+                </div>
+                <div class="mt-5">
+                    <span *ngFor="let prop of prop_array">
+                        <h6 class="mb-0">{{prop.field}}</h6> <span [style.color]="prop.critical?'red':'green'">{{prop.value}}</span> <br>
+                    </span>
+                    <div class="mt-5">
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" [style.width]="(prop_array.length-count_gucci)*100/prop_array.length+'%'" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <div class="mt-3"> <span class="text1">{{prop_array.length-count_gucci}} kritičnih <span class="text2">od {{prop_array.length}} kriterijuma</span></span> </div>
+                    </div>
+                </div>
+            </div>
+        
+    </div>
+</div>

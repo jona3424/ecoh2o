@@ -3,6 +3,11 @@ export interface Range {
 	max?: number;
 }
 
+export const bitne_metrike:string[] = [
+	"ph",
+	"temperature"
+]	
+
 export default {
 	"ph": {
 		min: 6.5,
