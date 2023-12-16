@@ -15,6 +15,7 @@ import { Status } from '../models/measurement';
 })
 export class MapaComponent {
 
+private open : number = -1;
 
   mapOptions: google.maps.MapOptions = {
     center: { lat: 44.7811458, lng: 20.3697531},
@@ -111,7 +112,18 @@ export class MapaComponent {
  @ViewChildren(MapInfoWindow) infoWindowsView !: QueryList<MapInfoWindow>;
 
  openInfoWindow(marker: MapMarker, windowIndex: number) {
-   this.infoWindowsView.get(windowIndex)?.open(marker);
+    
+    if(windowIndex == this.open){
+
+        this.infoWindowsView.get(this.open)?.close();
+        this.open = -1;
+    }else{
+        if(this.open != -1){
+            this.infoWindowsView.get(this.open)?.close();
+        }
+        this.open = windowIndex;
+        this.infoWindowsView.get(windowIndex)?.open(marker);
+    }
  }
 
  stations : Station[] | undefined;
