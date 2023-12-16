@@ -1,4 +1,5 @@
 import { FirestoreDataConverter } from "firebase/firestore";
+import allowedRanges from "src/allowed_ranges";
 
 export interface Properties {
 	[name: string]: number;
@@ -8,6 +9,7 @@ export default interface Measurement {
 	id: string;
 	created_at: Date;
 	properties: Properties;
+	status: boolean;
 }
 
 export const measurementConverter : FirestoreDataConverter<Measurement> = {
@@ -26,4 +28,23 @@ export const measurementConverter : FirestoreDataConverter<Measurement> = {
 			created_at: data.created_at.toDate(),
 		}
 	}
+}
+
+export function validateMeasurement(measurement: Measurement) {
+	for (const property in measurement.properties) {
+		if (!(property in allowedRanges)) {
+			console.error(`Measurement has unknown property ${property}`);
+			continue;
+		}
+
+		const value = measurement.properties[property];
+		
+		const { min, max } = allowedRanges[property];
+		if (min !== undefined && value < min || max !== undefined && value > max) {
+			measurement.status = false;
+			return;
+		}
+	}
+
+	measurement.status = true;
 }
