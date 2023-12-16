@@ -1,11 +1,18 @@
 import { Component } from '@angular/core';
 
+import {MapInfoWindow, MapMarker} from '@angular/google-maps'
+
 @Component({
   selector: 'app-mapa',
   templateUrl: './mapa.component.html',
   styleUrls: ['./mapa.component.scss']
 })
 export class MapaComponent {
+
+  marker = {
+    position: { lat: 44.7988288, lng: 20.3674271 },
+ }
+
   mapOptions: google.maps.MapOptions = {
     center: { lat: 44.7988288, lng: 20.3674271 },
     zoom : 14,
@@ -89,5 +96,13 @@ export class MapaComponent {
           ]
       }
   ]
+
+  
  }
+
+
+ public openInfoWindow(marker: MapMarker, infoWindow: MapInfoWindow) {
+    infoWindow.open(marker);
+  }
+
 }
