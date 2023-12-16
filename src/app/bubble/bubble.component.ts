@@ -39,13 +39,12 @@ export class BubbleComponent implements OnInit{
     if(this.stanica.latest_measurement){
             
       this.props = this.stanica.latest_measurement.properties;
-      var vals = Object.values(this.props);
       var keys = Object.keys(this.props)
-      for(var i = 0; i < vals.length; i++){
+      for(var i = 0; i < keys.length; i++){
         this.count_all++;
           var noviProp = new Prop();
           noviProp.field = keys[i];
-          noviProp.value = vals[i];
+          noviProp.value = this.props[keys[i]];
 
           var ranges = allowed_ranges[noviProp.field];
           noviProp.critical = "green";
