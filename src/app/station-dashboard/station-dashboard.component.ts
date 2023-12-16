@@ -3,13 +3,18 @@ import { ActivatedRoute } from "@angular/router";
 import Station from "../models/station";
 import { DatabaseService } from "../services/database.service";
 import Measurement from "../models/measurement";
+import { FormControl, FormGroup } from "@angular/forms";
+import allowedRanges from "src/allowed_ranges";
 @Component({
 	selector: 'app-station-dashboard',
 	templateUrl: './station-dashboard.component.html',
 	styleUrls: ['./station-dashboard.component.scss']
 })
 export class StationDashboardComponent implements OnInit {
-
+	range = new FormGroup({
+		start: new FormControl<Date | null>(null),
+		end: new FormControl<Date | null>(null),
+	  });
 
 
 	public datasets: any;
@@ -20,56 +25,82 @@ export class StationDashboardComponent implements OnInit {
 
 	private readonly stationId: string;
 	public station?: Station;
-	public measurements?: Measurement[]
-	
+	public allMeasurements?: Measurement[];
+	public get measurements(): Measurement[] | undefined {
+		if (!this.allMeasurements)
+			return undefined;
+
+		let start = this.range.value.start;
+		let end = this.range.value.end;
+
+		if (!start && !end)
+			return this.allMeasurements;
+
+		if (!start)
+			start = new Date(0);
+
+		if (!end)
+			end = new Date();
+
+		return this.allMeasurements.filter(measurement => measurement.created_at >= start! && measurement.created_at <= end!);
+	}
+
 	public constructor(activatedRoute: ActivatedRoute, private readonly database: DatabaseService) {
 		this.stationId = activatedRoute.snapshot.params.id;
 	}
 
+	dps = [{ x: 1, y: 10 }, { x: 2, y: 13 }, { x: 3, y: 18 }, { x: 4, y: 20 }, { x: 5, y: 17 }, { x: 6, y: 10 }, { x: 7, y: 13 }, { x: 8, y: 18 }, { x: 9, y: 20 }, { x: 10, y: 17 }];
+	chart: any;
+
+	chartOptions = {
+		axisX: {
+			labelFontColor: "#73c546",
+		},
+		axisY: {
+			labelFontColor: "#73c546",
+		},
+		animationEnabled: true,
+		backgroundColor: "#042530",
+		data: [{
+			type: "spline",
+			lineColor: "#2180ab",
+			markerColor: "#2180ab", lineThickness: 3,
+			dataPoints: this.dps
+		}]
+	}
+	getChartInstance(chart: object) {
+		this.chart = chart;
+	}
+
+
+	reloadChar(): void{
+		
+		if (!this.station || !this.allMeasurements) return;
+
+		this.dps = []
+
+		for(let meas of this.allMeasurements){
+			this.dps.push( {x : 1, y : 2} );
+		}
+
+		this.chart.render();
+	}
+
 	public ngOnInit() {
-
-		this.datasets = [
-      [0, 20, 10, 30, 15, 40, 20, 60, 60],
-      [0, 20, 5, 25, 10, 30, 15, 40, 40]
-    ];
-    this.data = this.datasets[0];
-
-
-    var chartOrders = document.getElementById('chart-orders');
-
-    // parseOptions(Chart, chartOptions());
-
-
-    // var ordersChart = new Chart(chartOrders, {
-    //   type: 'bar',
-    //   options: chartExample2.options,
-    //   data: chartExample2.data
-    // });
-
-    // var chartSales = document.getElementById('chart-sales');
-
-    // this.salesChart = new Chart(chartSales, {
-	// 		type: 'line',
-	// 		options: chartExample1.options,
-	// 		data: chartExample1.data
-	// 	});
-
-
-
 		this.database.getStation(this.stationId).then(station => {
 			if (!station)
 				return;
 
 			this.station = station;
 			this.database.getMeasurements(station).then(measurements => {
-				this.measurements = measurements;
-				if(this.station)
-					this.station.latest_measurement = this.measurements[this.measurements.length-1];
+				this.allMeasurements = measurements;
+				if (this.station)
+					this.station.latest_measurement = this.allMeasurements[this.allMeasurements.length - 1];
 			});
 		});
 	}
-	public updateOptions() {
-		// this.salesChart.data.datasets[0].data = this.data;
-		// this.salesChart.update();
-	  }
+
+	public getMetricNames(): string[] {
+		return Object.keys(allowedRanges);
+	}
 }

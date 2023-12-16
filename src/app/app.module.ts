@@ -6,21 +6,34 @@ import { AppComponent } from './app.component';
 import { MapaComponent } from './mapa/mapa.component';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { BubbleComponent } from './bubble/bubble.component';
-import { StationDashboardComponent } from './station-dashboard/station-dashboard.component'
+import { StationDashboardComponent } from './station-dashboard/station-dashboard.component';
+import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatFormFieldModule  } from "@angular/material/form-field";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [
     AppComponent,
     MapaComponent,
     BubbleComponent,
-    StationDashboardComponent
+    StationDashboardComponent,
   ],
   imports: [
     BrowserModule,
     GoogleMapsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    CanvasJSAngularChartsModule,
+    BrowserAnimationsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
