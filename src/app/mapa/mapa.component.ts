@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component,ViewEncapsulation  } from '@angular/core';
 
 @Component({
   selector: 'app-mapa',
   templateUrl: './mapa.component.html',
-  styleUrls: ['./mapa.component.scss']
+  styleUrls: ['./mapa.component.scss'],
+  encapsulation: ViewEncapsulation.None
+
 })
 export class MapaComponent {
   mapOptions: google.maps.MapOptions = {
@@ -88,6 +90,14 @@ export class MapaComponent {
               }
           ]
       }
-  ]
+  ],
+  streetViewControl: false,
+    fullscreenControl: false,
+    rotateControl: false,
+    mapTypeControl: false,
+    zoomControl: false, 
+    scaleControl: false,
+    panControl: false,
+    
  }
 }
