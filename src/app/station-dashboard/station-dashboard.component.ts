@@ -3,13 +3,17 @@ import { ActivatedRoute } from "@angular/router";
 import Station from "../models/station";
 import { DatabaseService } from "../services/database.service";
 import Measurement from "../models/measurement";
+import { FormControl, FormGroup } from "@angular/forms";
 @Component({
 	selector: 'app-station-dashboard',
 	templateUrl: './station-dashboard.component.html',
 	styleUrls: ['./station-dashboard.component.scss']
 })
 export class StationDashboardComponent implements OnInit {
-
+	range = new FormGroup({
+		start: new FormControl<Date | null>(null),
+		end: new FormControl<Date | null>(null),
+	  });
 
 
 	public datasets: any;
