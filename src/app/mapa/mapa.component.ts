@@ -14,8 +14,6 @@ import { Status } from '../models/measurement';
 
 })
 export class MapaComponent {
-
-
   mapOptions: google.maps.MapOptions = {
     center: { lat: 44.7811458, lng: 20.3697531},
     zoom : 14,
