@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, QueryList, ViewChildren } from '@angular/core';
 
 import {MapInfoWindow, MapMarker} from '@angular/google-maps'
 
@@ -9,9 +9,12 @@ import {MapInfoWindow, MapMarker} from '@angular/google-maps'
 })
 export class MapaComponent {
 
-  marker = {
-    position: { lat: 44.7988288, lng: 20.3674271 },
+  markeri = {
+    position: { lat: 44.7988288, lng: 20.3674271},
  }
+ markeriA = {
+   position: { lat: 44.7918288, lng: 20.3674271},
+}
 
   mapOptions: google.maps.MapOptions = {
     center: { lat: 44.7988288, lng: 20.3674271 },
@@ -99,10 +102,20 @@ export class MapaComponent {
 
   
  }
+ @ViewChildren(MapInfoWindow) infoWindowsView !: QueryList<MapInfoWindow>;
 
-
- public openInfoWindow(marker: MapMarker, infoWindow: MapInfoWindow) {
-    infoWindow.open(marker);
-  }
+ openInfoWindow(marker: MapMarker, windowIndex: number) {
+   /// stores the current index in forEach
+   let curIdx = 0;
+   console.log(windowIndex);
+   this.infoWindowsView.forEach((window: MapInfoWindow) => {
+     if (windowIndex === curIdx) {
+       window.open(marker);
+       curIdx++;
+     } else {
+       curIdx++;
+     }
+   });
+ }
 
 }

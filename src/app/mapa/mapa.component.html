@@ -1,6 +1,9 @@
 <div class="my-google-map">
     <google-map [options]="mapOptions">
-        <map-marker #marker="mapMarker" [position]="marker.position"  (mapClick)="openInfoWindow(marker, infoWindow)"></map-marker>
-        <map-info-window #infoWindow="mapInfoWindow"> Content of ...</map-info-window>
+
+
+        <map-marker #marker="mapMarker" [position]="markeriA.position"  (mapClick)="openInfoWindow(marker, 0)">
+        <map-info-window #niga> Aaaaa</map-info-window></map-marker>
+
     </google-map>
   </div>
