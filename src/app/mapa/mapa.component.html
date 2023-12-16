@@ -1,7 +1,9 @@
-
+<div class="logo-overlay">
+  <img src="assets/images/logo.png" class="logo" alt="logo">
+</div>
 <div *ngIf="stations != null" class="my-google-map">
     <google-map [width]="null" [height]="null" [options]="mapOptions">
-        <map-marker *ngFor="let stanica of stations; let i = index" #marker="mapMarker" [position]="stanica.location"  (mapClick)="openInfoWindow(marker, i)">
+        <map-marker *ngFor="let stanica of stations; let i = index" #marker="mapMarker" [position]="stanica.location" [icon]="getMarkerIcon('green')"  (mapClick)="openInfoWindow(marker, i) ">
             <map-info-window> {{stanica.latest_measurement?.status}}</map-info-window>
         </map-marker>
 

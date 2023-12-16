@@ -14,6 +14,19 @@ import { DatabaseService } from '../services/database.service';
 })
 export class MapaComponent {
 
+    // stationMarkerOptions: google.maps.MarkerOptions = {
+    //     icon: 'assets/images/green_pulsing_dot.svg',
+    // };
+
+    getMarkerIcon(color: 'green' | 'red' | 'yellow'): google.maps.Icon {
+        // Construct the path to the SVG asset
+        const svgPath = `assets/images/${color}_pulsing_dot.svg`;
+        
+        return {
+          url: svgPath,
+          anchor: new google.maps.Point(16, 16),
+        };
+      }
 
   mapOptions: google.maps.MapOptions = {
     center: { lat: 44.7811458, lng: 20.3697531},

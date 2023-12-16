@@ -1,5 +1,7 @@
 .my-google-map {
+    position: relative;
     .map-container{
+        
         height: 100vh;
         width: 100vw;
           position: absolute;
@@ -7,6 +9,20 @@
           left: 0;
           right: 0;
           bottom: 0;
+          
       }
    
+  }
+  .logo-overlay {
+    position: absolute; // Positions the logo over the map
+    top: 10px; // Adjust this value to position the logo from the top
+    left: 10px; // Adjust this value to position the logo from the left
+    opacity: 0.6; // Set transparency of the logo (0 is fully transparent, 1 is fully opaque)
+    z-index: 1000; // Ensure the logo is above the map
+  
+    .logo {
+      width: 100px; // Set the width of your logo
+      height: auto; // Maintain aspect ratio
+      // Add any additional styling you need for the logo here
+    }
   }
