@@ -13,6 +13,8 @@ export default {
 		min: 6.5,
 		max: 8.5
 	},
+	"speed": {
+	},
 	"temperature": {},
 	"oxygen": {},
 	"orv": {

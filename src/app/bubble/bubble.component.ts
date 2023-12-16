@@ -7,6 +7,7 @@ class Prop{
   field : string = "";
   value : number = 0;
   critical : string = "green";
+  text : string = "green";
 }
 
 @Component({
@@ -21,6 +22,8 @@ export class BubbleComponent implements OnInit{
   props !: Properties;
 
   prop_array : Prop[] = [];
+  prop_kriticno : Prop[] = [];
+  prop_prihvatljivo: Prop[] = [];
 
   fields : string[] = [];
   values : number[] = [];
@@ -31,6 +34,7 @@ export class BubbleComponent implements OnInit{
 
   count_bad = 0;
   count_maybe = 0;
+  count_all = 0;
 
   ngOnInit(){
     if(this.stanica.latest_measurement){
@@ -39,7 +43,7 @@ export class BubbleComponent implements OnInit{
       var vals = Object.values(this.props);
       var keys = Object.keys(this.props)
       for(var i = 0; i < vals.length; i++){
-        if(bitne_metrike.includes(keys[i])){
+        this.count_all++;
           var noviProp = new Prop();
           noviProp.field = keys[i];
           noviProp.value = vals[i];
@@ -62,8 +66,15 @@ export class BubbleComponent implements OnInit{
             this.count_maybe++;
           }
 
-          this.prop_array.push(noviProp);
-        }
+          switch(noviProp.critical){
+            case "red":noviProp.text="Kritično";this.prop_kriticno.push(noviProp);break;
+            case "#ffcc00":noviProp.text="Prihvatljivo";this.prop_prihvatljivo.push(noviProp);break;
+            default: noviProp.text="Drip";
+          }
+
+          // if(bitne_metrike.includes(keys[i])){
+            this.prop_array.push(noviProp);
+          // }
       }    
       
       this.kad = this.stanica.latest_measurement.created_at.toLocaleDateString('sr-RS');

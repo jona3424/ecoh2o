@@ -17,7 +17,7 @@ export class DatabaseService {
 
 		for (const station of stations){
 			station.latest_measurement = await this.getLatestMeasurement(station);
-			
+
         	var color = "green";
 			if(station.latest_measurement){
 				switch(station.latest_measurement.status){
@@ -35,7 +35,7 @@ export class DatabaseService {
 
 			
 		}
-
+		console.log(stations);
 		return stations;
 	}
 
