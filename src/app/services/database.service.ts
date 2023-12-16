@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { collection, getDocs, limit, orderBy, query } from 'firebase/firestore';
 import { db } from 'src/firebase';
 import Station, { stationConverter } from '../models/station';
-import Measurement, { measurementConverter, validateMeasurement } from '../models/measurement';
+import Measurement, { Status, measurementConverter, validateMeasurement } from '../models/measurement';
 
 @Injectable({
 	providedIn: 'root'
@@ -15,8 +15,26 @@ export class DatabaseService {
 		const { docs } = await getDocs(coll);
 		const stations = docs.map(doc => doc.data());
 
-		for (const station of stations)
+		for (const station of stations){
 			station.latest_measurement = await this.getLatestMeasurement(station);
+			
+        	var color = "green";
+			if(station.latest_measurement){
+				switch(station.latest_measurement.status){
+					case Status.Critical : color = "red";break;
+					case Status.Warning : color = "yellow";break;
+				}
+			}
+			 // Construct the path to the SVG asset
+			 const svgPath = `assets/images/${color}_pulsing_dot.svg`;
+        
+			 station.icon =  {
+				 url: svgPath,
+				 anchor: new google.maps.Point(16, 16),
+			   };
+
+			
+		}
 
 		return stations;
 	}

@@ -4,7 +4,7 @@
 <div *ngIf="stations != null" class="my-google-map">
     <google-map [width]="null" [height]="null" [options]="mapOptions">
 
-        <map-marker *ngFor="let stanica of stations; let i = index" #marker="mapMarker" [position]="stanica.location" [icon]="getMarkerIcon('green')"  (mapClick)="openInfoWindow(marker, i) ">
+        <map-marker *ngFor="let stanica of stations; let i = index" #marker="mapMarker" [position]="stanica.location" [icon]="stanica.icon"  (mapClick)="openInfoWindow(marker, i) ">
             <map-info-window> 
 
                 <app-bubble [stanica]="stanica"></app-bubble>

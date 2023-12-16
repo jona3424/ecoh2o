@@ -4,6 +4,7 @@ import { Component, ViewEncapsulation, QueryList, ViewChildren } from '@angular/
 import {MapInfoWindow, MapMarker} from '@angular/google-maps'
 import Station from '../models/station';
 import { DatabaseService } from '../services/database.service';
+import { Status } from '../models/measurement';
 
 @Component({
   selector: 'app-mapa',
@@ -14,19 +15,6 @@ import { DatabaseService } from '../services/database.service';
 })
 export class MapaComponent {
 
-    // stationMarkerOptions: google.maps.MarkerOptions = {
-    //     icon: 'assets/images/green_pulsing_dot.svg',
-    // };
-
-    getMarkerIcon(color: 'green' | 'red' | 'yellow'): google.maps.Icon {
-        // Construct the path to the SVG asset
-        const svgPath = `assets/images/${color}_pulsing_dot.svg`;
-        
-        return {
-          url: svgPath,
-          anchor: new google.maps.Point(16, 16),
-        };
-      }
 
   mapOptions: google.maps.MapOptions = {
     center: { lat: 44.7811458, lng: 20.3697531},
@@ -134,7 +122,6 @@ export class MapaComponent {
 
 	ngOnInit(): void {
 		this.db.getStations().then(stations => {
-			console.log(stations);
 			this.stations = stations;
 		});
 	}

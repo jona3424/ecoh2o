@@ -7,6 +7,7 @@ export default interface Station {
 	location: google.maps.LatLng;
 
 	latest_measurement?: Measurement;
+	icon : google.maps.Icon;
 }
 
 export const stationConverter : FirestoreDataConverter<Station> = {
