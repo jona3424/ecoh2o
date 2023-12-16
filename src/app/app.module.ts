@@ -7,6 +7,7 @@ import { MapaComponent } from './mapa/mapa.component';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { BubbleComponent } from './bubble/bubble.component';
 import { StationDashboardComponent } from './station-dashboard/station-dashboard.component'
+import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { StationDashboardComponent } from './station-dashboard/station-dashboard
   imports: [
     BrowserModule,
     GoogleMapsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    CanvasJSAngularChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
