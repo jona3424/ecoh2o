@@ -5,13 +5,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MapaComponent } from './mapa/mapa.component';
 import { GoogleMapsModule } from '@angular/google-maps';
-import { BubbleComponent } from './bubble/bubble.component'
+import { BubbleComponent } from './bubble/bubble.component';
+import { StationDashboardComponent } from './station-dashboard/station-dashboard.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     MapaComponent,
-    BubbleComponent
+    BubbleComponent,
+    StationDashboardComponent
   ],
   imports: [
     BrowserModule,

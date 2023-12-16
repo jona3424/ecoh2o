@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { collection, getDocs, limit, orderBy, query } from 'firebase/firestore';
+import { collection, getDocs, limit, orderBy, query, doc, getDoc } from 'firebase/firestore';
 import { db } from 'src/firebase';
 import Station, { stationConverter } from '../models/station';
 import Measurement, { Status, measurementConverter, validateMeasurement } from '../models/measurement';
@@ -9,6 +9,18 @@ import Measurement, { Status, measurementConverter, validateMeasurement } from '
 })
 export class DatabaseService {
 	constructor() { }
+
+	async getStation(id: string) : Promise<Station | undefined> {
+		const ref = doc(db, "stations", id).withConverter(stationConverter);
+		const document = await getDoc(ref);
+		if (!document.exists())
+			return undefined;
+
+		const station = document.data();
+		// station.latest_measurement = await this.getLatestMeasurement(station);
+
+		return station;
+	}
 
 	async getStations() : Promise<Station[]> {
 		const coll = collection(db, "stations").withConverter(stationConverter);
@@ -32,8 +44,6 @@ export class DatabaseService {
 				 url: svgPath,
 				 anchor: new google.maps.Point(16, 16),
 			   };
-
-			
 		}
 		console.log(stations);
 		return stations;
