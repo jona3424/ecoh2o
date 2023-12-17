@@ -105,7 +105,7 @@
               <thead class="thead-light">
                 <tr>
                   <th scope="col">Vreme</th>
-                  <th scope="col" *ngFor="let metricName of getMetricNames()">{{metricName}}</th>
+                  <th scope="col" *ngFor="let metricName of keys">{{metricName}}</th>
                 </tr>
               </thead>
               <tbody>
@@ -114,7 +114,7 @@
                     {{measurement.created_at | date:"dd.MM.yyyy. hh:mm"}}
                   </th>
 
-                  <td *ngFor="let metricName of getMetricNames()">
+                  <td *ngFor="let metricName of keys">
                     {{measurement.properties[metricName] | number : '1.2-2'}}
                 </tr>
               </tbody>
