@@ -13,6 +13,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule  } from "@angular/material/form-field";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
+import paginatorTranslations from "../paginator_translations";
 
 @NgModule({
   declarations: [
@@ -31,9 +33,15 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
     MatNativeDateModule,
     MatFormFieldModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatPaginatorModule
   ],
-  providers: [],
+  providers: [
+    { 
+      provide: MatPaginatorIntl, 
+      useValue: paginatorTranslations
+    }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

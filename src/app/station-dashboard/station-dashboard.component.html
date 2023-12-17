@@ -109,7 +109,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let measurement of measurements">
+                <tr *ngFor="let measurement of (measurements | slice: lowValue : highValue)">
                   <th scope="row">
                     {{measurement.created_at | date:"dd.MM.yyyy. hh:mm"}}
                   </th>
@@ -120,6 +120,9 @@
               </tbody>
             </table>
           </div>
+          <mat-paginator [length]="measurements?.length" pageSize="20"
+                        [pageSizeOptions]="[5, 10, 25, 100]"
+                        (page)="fetchNextPage($event)" />
         </div>
       </div>
     </div>
