@@ -1,140 +1,129 @@
 <div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
-    <div class="container-fluid">
-      <div class="header-body">
-        <!-- Card stats -->
-        <div class="row">
-
-
-          <div *ngFor="let topRow of top_row" class=" col-xl-2 col-lg-6" (click)="setField(topRow)">
-            <div [class.activeTopRow]="topRow.field==chart_field"  class="topRow card card-stats mb-4 mb-xl-0">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col">
-                    <h5 class="card-title text-uppercase text-muted mb-0">{{topRow.field}}</h5>
-                    <span class="h2 font-weight-bold mb-0">{{topRow.value}}</span>
-                  </div>
-                  <div class="col-auto">
-                    <div [style.backgroundColor]="topRow.color" class="icon icon-shape text-white rounded-circle shadow">
-                      <img style="margin-top: 7px;" width="35px" src="assets/images/{{topRow.icon}}">
-                    </div>
+  <div class="container-fluid">
+    <div class="header-body">
+      <div class="row">
+        <div *ngFor="let topRow of top_row"
+            class="col-xl-2 col-lg-6" (click)="setField(topRow)">
+          <div [class.activeTopRow]="topRow.field == chart_field"
+              class="topRow card card-stats mb-4 mb-xl-0">
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+                  <h5 class="card-title text-uppercase text-muted mb-0">
+                    {{ topRow.field }}
+                  </h5>
+                  <span class="h2 font-weight-bold mb-0">
+                    {{topRow.value}}
+                  </span>
+                </div>
+                <div class="col-auto">
+                  <div [style.backgroundColor]="topRow.color"
+                      class="icon icon-shape text-white rounded-circle shadow">
+                    <img style="margin-top: 7px" width="35px"
+                        src="assets/images/{{ topRow.icon }}" />
                   </div>
                 </div>
-                <p class="mt-3 mb-0 text-muted text-sm">
-                  <span class="mr-2" [style.color]="topRow.increase<0?'red':'green'"> {{topRow.increase}}%</span>
-                  <span class="text-nowrap">od poslednjeg merenja</span>
-                </p>
               </div>
+              <p class="mt-3 mb-0 text-muted text-sm">
+                <span class="mr-2" [style.color]="topRow.increase < 0 ? 'red' : 'green'">
+                  {{ topRow.increase }}%
+                </span>
+                <span class="text-nowrap">od poslednjeg merenja</span>
+              </p>
             </div>
-          </div>
-                    
-
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="container-fluid mt--7">
-    <div class="row">
-      <div class="col-xl-8 mb-5 mb-xl-0">
-        <div class="card bg-gradient-default shadow">
-          <div class="card-header bg-transparent">
-            <div class="row align-items-center">
-              <div class="col">
-                <h6 class="text-uppercase text-light ls-1 mb-1">Overview</h6>
-                <h2 class="text-white mb-0">Sales value</h2>
-              </div>
-               <div class="col">
-                <ul class="nav nav-pills justify-content-end">
-                  <li class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales" (click)="setWeek()">
-                    <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked===true}" data-toggle="tab" (click)="clicked=true;clicked1=false">
-                      <span class="d-none d-md-block">Sedmica</span>
-                      <span class="d-md-none">W</span>
-                    </a>
-                  </li>
-                  <li class="nav-item" data-toggle="chart" data-target="#chart-sales" (click)="setMonth()">
-                    <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked1===true}" data-toggle="tab" (click)="clicked=false;clicked1=true">
-                      <span class="d-none d-md-block">Mesec</span>
-                      <span class="d-md-none">M</span>
-                    </a>
-                  </li>
-                </ul>
-              </div> 
-            </div>
-          </div>
-          <div class="card-body">
-            <!-- Chart -->
-            <div class="chart">
-                <canvasjs-chart [options]="chartOptions" [styles]="{width: '100%', height:'360px'}" (chartInstance)="getChartInstance($event)"></canvasjs-chart>    
-                                  
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-4">
-        <div class="card shadow">
-          <div class="card-header bg-transparent">
-            <div class="row align-items-center">
-              <div class="col">
-                <h6 class="text-uppercase text-muted ls-1 mb-1">Performance</h6>
-                <h2 class="mb-0">Total orders</h2>
-              </div>
-            </div>
-          </div>
-          <div class="card-body">
-            <mat-form-field>
-              <mat-label>Raspon datuma</mat-label>
-              <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-
-                <input #startDatum matStartDate formControlName="start" placeholder="Početni datum">
-                <input #endDatum (dateChange)="updateCalcs(); paginator.firstPage()" matEndDate formControlName="end" placeholder="Krajnji datum">
-
-              </mat-date-range-input>
-              <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-date-range-picker #picker></mat-date-range-picker>
-            
-              <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
-              <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
-            </mat-form-field>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row mt-5">
-      <div class="col-xl-12 mb-5 mb-xl-0">
-        <div class="card shadow">
-          <div class="table-responsive">
-            <table class="table align-items-center table-flush">
-              <thead class="thead-light">
-                <tr>
-                  <th scope="col">Vreme</th>
-                  <th scope="col" *ngFor="let metricName of keys">{{metricName}}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let measurement of (measurements | slice: lowValue : highValue)">
-                  <th scope="row">
-                    {{measurement.created_at | date:"dd.MM.yyyy. hh:mm"}}
-                  </th>
-
-                  <td *ngFor="let metricName of keys">
-                    {{measurement.properties[metricName] | number : '1.2-2'}}
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          
-          <div class="d-flex">
-            <button mat-raised-button color="primary" class="mx-2 align-self-center"
-                    (click)="download()">
-              Preuzmi
-            </button>
-            <mat-paginator class="flex-grow-1" #paginator
-                          [length]="measurements?.length" pageSize="20"
-                          [pageSizeOptions]="[5, 10, 25, 100]"
-                          (page)="fetchNextPage($event)" />
           </div>
         </div>
       </div>
     </div>
   </div>
-  
+</div>
+
+<div class="d-flex my-2 mx-1">
+  <div class="flex-grow-1 card bg-gradient-default shadow mr-1">
+    <div class="card-body px-1">
+      <canvasjs-chart [options]="chartOptions" (chartInstance)="getChartInstance($event)"
+                      class="rounded chart" />
+    </div>
+  </div>
+
+  <div class="card shadow align-self-center ml-1">
+    <div class="card-body py-1">
+      <ul class="nav nav-pills justify-content-center mb-2">
+        <li class="nav-item" (click)="setWeek()">
+          <a href="javascript:void(0)" class="nav-link"
+             [ngClass]="{ active: weekChoosen === true }"
+             data-toggle="tab" (click)="weekChoosen = true; monthChoosen = false">
+            <span class="d-none d-md-block">Sedmica</span>
+            <span class="d-md-none">W</span>
+          </a>
+        </li>
+
+        <li class="nav-item" (click)="setMonth()">
+          <a href="javascript:void(0)" class="nav-link"
+             [ngClass]="{ active: monthChoosen === true }" 
+             data-toggle="tab" (click)="weekChoosen = false; monthChoosen = true">
+            <span class="d-none d-md-block">Mesec</span>
+            <span class="d-md-none">M</span>
+          </a>
+        </li>
+      </ul>
+
+      <mat-form-field appearance="outline" class="mt-2">
+        <mat-label>Proizvoljni opseg</mat-label>
+
+        <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+          <input matStartDate formControlName="start" placeholder="Početni datum" />
+          <input matEndDate formControlName="end" placeholder="Krajnji datum"
+                 (dateChange)="updateCalcs(); paginator.firstPage()" />
+        </mat-date-range-input>
+        
+        <mat-datepicker-toggle matIconSuffix [for]="picker" />
+        <mat-date-range-picker #picker />
+
+        <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">
+          Invalid start date
+        </mat-error>
+        <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">
+          Invalid end date
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+</div>
+
+<div class="card shadow p-1">
+  <div class="card-body mx-0">
+    <table class="table align-items-center table-flush">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">Vreme</th>
+          <th scope="col" *ngFor="let metricName of keys">
+            {{ metricName }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let measurement of measurements | slice : lowValue : highValue">
+          <th scope="row">
+            {{ measurement.created_at | date : "dd.MM.yyyy. hh:mm" }}
+          </th>
+
+          <td *ngFor="let metricName of keys">
+            {{ measurement.properties[metricName] | number : "1.2-2" }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="d-flex">
+    <button mat-raised-button color="primary"
+            class="mx-2 align-self-center" (click)="download()">
+      Preuzmi
+    </button>
+
+    <mat-paginator class="flex-grow-1" #paginator
+                  [length]="measurements?.length" pageSize="20"
+                  [pageSizeOptions]="[5, 10, 25, 100]" (page)="fetchNextPage($event)" />
+  </div>
+</div>

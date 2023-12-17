@@ -22,15 +22,15 @@ class Latest{
 })
 export class StationDashboardComponent implements OnInit {
 	range = new FormGroup({
-		end: new FormControl<Date | null>(new Date(Date.now())),
-		start: new FormControl<Date | null>(new Date(Date.now()-7*24*60*60*1000)),
-	  });
+		end: new FormControl(new Date()),
+		start: new FormControl(new Date(Date.now()-7*24*60*60*1000)),
+	});
 
 
 	public datasets: any;
 	public data: any;
-	public clicked: boolean = true;
-	public clicked1: boolean = false;
+	public weekChoosen = true;
+	public monthChoosen = false;
 
 	private readonly stationId: string;
 	public station?: Station;
@@ -66,30 +66,26 @@ export class StationDashboardComponent implements OnInit {
 
 	public subLatestMeas !: Measurement;
 
-
-	@ViewChild("startDatum")
-	private startDatum !: ElementRef;
-	@ViewChild("endDatum")
-	private endDatum !: ElementRef;
-
 	setMonth(){
 		var danas = new Date();
+
 		var tad = new Date();
 		tad.setMonth(tad.getMonth()-1);
 		
 		this.range.setValue({end: danas, start: tad});
+
 		this.reloadChart();
 	}
 
 	setWeek(){
 		var danas = new Date();
+
 		var tad = new Date();
 		tad.setDate(tad.getDate()-7);
 
 		this.range.setValue({end: danas, start: tad});
 
 		this.reloadChart();
-
 	}
 
 	top_row : Latest[] = [];
@@ -127,6 +123,7 @@ export class StationDashboardComponent implements OnInit {
 			dataPoints: this.dps
 		}]
 	}
+	
 	getChartInstance(chart: object) {
 		this.chart = chart;
 	}
@@ -242,9 +239,9 @@ export class StationDashboardComponent implements OnInit {
 		
 		const dan = 1000*60*60*24;
 
-		this.clicked1 = Math.round(this.range.value.end.getTime()/dan) == Math.round(danas.getTime()/dan) 
+		this.monthChoosen = Math.round(this.range.value.end.getTime()/dan) == Math.round(danas.getTime()/dan) 
 				&& Math.round(this.range.value.start.getTime()/dan) == Math.round(tadMjesec.getTime()/dan);	
-		this.clicked = Math.round(this.range.value.end.getTime()/dan) == Math.round(danas.getTime()/dan) 
+		this.weekChoosen = Math.round(this.range.value.end.getTime()/dan) == Math.round(danas.getTime()/dan) 
 				&& Math.round(this.range.value.start.getTime()/dan) == Math.round(tad.getTime()/dan);	
 	
 		this.reloadChart();
