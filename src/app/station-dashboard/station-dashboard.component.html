@@ -5,8 +5,8 @@
         <div class="row">
 
 
-          <div *ngFor="let topRow of top_row" class="col-xl-2 col-lg-6" (click)="setField(topRow)">
-            <div class="card card-stats mb-4 mb-xl-0">
+          <div *ngFor="let topRow of top_row" class=" col-xl-2 col-lg-6" (click)="setField(topRow)">
+            <div [class.activeTopRow]="topRow.field==chart_field"  class="topRow card card-stats mb-4 mb-xl-0">
               <div class="card-body">
                 <div class="row">
                   <div class="col">
@@ -15,12 +15,12 @@
                   </div>
                   <div class="col-auto">
                     <div [style.backgroundColor]="topRow.color" class="icon icon-shape text-white rounded-circle shadow">
-                      <img src="assets/images/{{topRow.icon}}">
+                      <img style="margin-top: 7px;" width="35px" src="assets/images/{{topRow.icon}}">
                     </div>
                   </div>
                 </div>
                 <p class="mt-3 mb-0 text-muted text-sm">
-                  <span class="mr-2" [style.color]="topRow.color"> {{topRow.increase}}%</span>
+                  <span class="mr-2" [style.color]="topRow.increase<0?'red':'green'"> {{topRow.increase}}%</span>
                   <span class="text-nowrap">od poslednjeg merenja</span>
                 </p>
               </div>
@@ -83,8 +83,8 @@
             <mat-form-field>
               <mat-label>Raspon datuma</mat-label>
               <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-                <input  matStartDate formControlName="start" placeholder="Pocetni datum">
-                <input (ngModelChange)="updateCalcs()"  matEndDate formControlName="end" placeholder="Krajnji datum">
+                <input #startDatum matStartDate formControlName="start" placeholder="Pocetni datum">
+                <input #endDatum (ngModelChange)="updateCalcs()"  matEndDate formControlName="end" placeholder="Krajnji datum">
               </mat-date-range-input>
               <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -105,7 +105,7 @@
               <thead class="thead-light">
                 <tr>
                   <th scope="col">Vreme</th>
-                  <th scope="col" *ngFor="let metricName of getMetricNames()">{{metricName}}</th>
+                  <th scope="col" *ngFor="let metricName of keys">{{metricName}}</th>
                 </tr>
               </thead>
               <tbody>
@@ -114,7 +114,7 @@
                     {{measurement.created_at | date:"dd.MM.yyyy. hh:mm"}}
                   </th>
 
-                  <td *ngFor="let metricName of getMetricNames()">
+                  <td *ngFor="let metricName of keys">
                     {{measurement.properties[metricName] | number : '1.2-2'}}
                 </tr>
               </tbody>

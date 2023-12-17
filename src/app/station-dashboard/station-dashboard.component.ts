@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import Station from "../models/station";
 import { DatabaseService } from "../services/database.service";
@@ -66,13 +66,19 @@ export class StationDashboardComponent implements OnInit {
 
 	public subLatestMeas !: Measurement;
 
+
+	@ViewChild("startDatum")
+	private startDatum !: ElementRef;
+	@ViewChild("endDatum")
+	private endDatum !: ElementRef;
+
 	setMonth(){
 		var danas = new Date();
 		var tad = new Date();
 		tad.setMonth(tad.getMonth()-1);
 		
-		this.range.value.end = danas;
-		this.range.value.start = tad;
+		this.range.setValue({end: danas, start: tad});
+
 		this.reloadChart();
 	}
 
@@ -82,8 +88,8 @@ export class StationDashboardComponent implements OnInit {
 		tad.setDate(tad.getDate()-7);
 
 
-		this.range.value.end = danas;
-		this.range.value.start = tad;	
+		this.range.setValue({end: danas, start: tad});
+
 		this.reloadChart();
 	}
 
@@ -227,6 +233,21 @@ export class StationDashboardComponent implements OnInit {
 
 	updateCalcs(){
 		if(!this.range.value.end || !this.range.value.start) return;
+		
+		var danas = new Date();
+		var tadMjesec = new Date();
+		tadMjesec.setMonth(tadMjesec.getMonth()-1);
+
+		var tad = new Date();
+		tad.setDate(tad.getDate()-7);
+		
+		const dan = 1000*60*60*24;
+
+		this.clicked1 = Math.round(this.range.value.end.getTime()/dan) == Math.round(danas.getTime()/dan) 
+				&& Math.round(this.range.value.start.getTime()/dan) == Math.round(tadMjesec.getTime()/dan);	
+		this.clicked = Math.round(this.range.value.end.getTime()/dan) == Math.round(danas.getTime()/dan) 
+				&& Math.round(this.range.value.start.getTime()/dan) == Math.round(tad.getTime()/dan);	
+	
 		this.reloadChart();
 	}
 }
