@@ -160,7 +160,7 @@ export class StationDashboardComponent implements OnInit {
 		var vals = meas.properties[data];
 		let index = this.keys.indexOf(data);
 		if(index == -1) return 0;
-		return Math.floor(vals);
+		return Math.round(vals*100)/100;
 	}
 
 
