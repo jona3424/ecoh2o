@@ -20,7 +20,7 @@
                   </div>
                 </div>
                 <p class="mt-3 mb-0 text-muted text-sm">
-                  <span class="mr-2" [style.color]="topRow.color"> {{topRow.increase}}%</span>
+                  <span class="mr-2" [style.color]="topRow.increase<0?'red':'green'"> {{topRow.increase}}%</span>
                   <span class="text-nowrap">od poslednjeg merenja</span>
                 </p>
               </div>
