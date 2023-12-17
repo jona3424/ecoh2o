@@ -32,6 +32,7 @@
 
 
 .scroll-container {
+    width: 100%;
     flex-wrap: nowrap;
     display: flex;
     overflow-x: auto;
@@ -44,7 +45,7 @@
     padding: 10px;
     flex: 0 0 auto; 
     display: inline-block;
-    width: 60vh;
+    width: 19.4%;
     margin: 5px;/* Flexbox settings for the cards */
     /* Add more styling for your cards */
   }
