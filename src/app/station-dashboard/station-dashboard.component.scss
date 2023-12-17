@@ -8,9 +8,20 @@
 }
 
 .topRow:hover{
-    background-color: #eee;
+    background-color: #ddd;
 }
 
 .activeTopRow{
-    background-color: #efefef;
+    background-color: #dedede;
 }
+
+  
+.logo-overlay {
+    opacity: 0.6;
+    /* Remove position, top, left, and z-index from here */
+    display: inline-block;
+    .logo {
+      width: 100px;
+      height: auto;
+    }
+  }
