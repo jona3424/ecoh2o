@@ -65,8 +65,8 @@ export class BubbleComponent implements OnInit{
           }
 
           switch(noviProp.critical){
-            case "red":noviProp.text="Kritično";this.prop_kriticno.push(noviProp);break;
-            case "#ffcc00":noviProp.text="Prihvatljivo";this.prop_prihvatljivo.push(noviProp);break;
+            case "red":noviProp.text="Opasno";this.prop_kriticno.push(noviProp);break;
+            case "#ffcc00":noviProp.text="Rizično";this.prop_prihvatljivo.push(noviProp);break;
             default: noviProp.text="Drip";
           }
 
@@ -82,7 +82,7 @@ export class BubbleComponent implements OnInit{
         break;
       case Status.Warning:
         this.badge_class = "badge-warning";
-        this.badge_text = "Prihvatljivo";
+        this.badge_text = "Rizično";
         break;
       case Status.Critical:
         this.badge_class = "badge-danger";
