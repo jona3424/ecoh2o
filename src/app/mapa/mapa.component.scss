@@ -13,16 +13,40 @@
       }
    
   }
-  .logo-overlay {
-    position: absolute; // Positions the logo over the map
-    top: 10px; // Adjust this value to position the logo from the top
-    left: 10px; // Adjust this value to position the logo from the left
-    opacity: 0.6; // Set transparency of the logo (0 is fully transparent, 1 is fully opaque)
-    z-index: 1000; // Ensure the logo is above the map
+  .map-controls {
+    position: absolute;
+    top: 10px; /* Adjust as needed */
+    left: 10px; /* Adjust as needed */
+    display: flex;
+    align-items: flex-start;
+    gap: 10px; /* Space between logo and search bar */
+    z-index: 1000; /* Ensure it's above the map */
+  }
   
+  .logo-overlay {
+    opacity: 0.6;
+    /* Remove position, top, left, and z-index from here */
+    
     .logo {
-      width: 100px; // Set the width of your logo
-      height: auto; // Maintain aspect ratio
-      // Add any additional styling you need for the logo here
+      width: 100px;
+      height: auto;
+    }
+  }
+  
+  .search-container {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    /* Remove position, top, left, and z-index from here */
+  
+    input#google-map-search {
+      width: 400px;
+      margin: 20px;
+      margin-left: 0;
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     }
   }
