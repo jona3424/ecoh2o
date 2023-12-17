@@ -229,4 +229,12 @@ export class StationDashboardComponent implements OnInit {
 		if(!this.range.value.end || !this.range.value.start) return;
 		this.reloadChart();
 	}
+
+	download() {
+		const file = new Blob([JSON.stringify(this.measurements)], { type: 'text/json' });
+		const a = document.createElement('a');
+		a.href = URL.createObjectURL(file);
+		a.download = 'measurements.json';
+		a.click();
+	}
 }

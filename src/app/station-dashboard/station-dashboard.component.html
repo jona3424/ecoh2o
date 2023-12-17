@@ -120,9 +120,17 @@
               </tbody>
             </table>
           </div>
-          <mat-paginator [length]="measurements?.length" pageSize="20"
-                        [pageSizeOptions]="[5, 10, 25, 100]"
-                        (page)="fetchNextPage($event)" />
+          
+          <div class="d-flex">
+            <button mat-raised-button color="primary" class="mx-2 align-self-center"
+                    (click)="download()">
+              Preuzmi
+            </button>
+            <mat-paginator class="flex-grow-1"
+                          [length]="measurements?.length" pageSize="20"
+                          [pageSizeOptions]="[5, 10, 25, 100]"
+                          (page)="fetchNextPage($event)" />
+          </div>
         </div>
       </div>
     </div>
