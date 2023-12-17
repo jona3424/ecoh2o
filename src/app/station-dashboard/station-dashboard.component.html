@@ -83,8 +83,8 @@
             <mat-form-field>
               <mat-label>Raspon datuma</mat-label>
               <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-                <input  matStartDate formControlName="start" placeholder="Pocetni datum">
-                <input (ngModelChange)="updateCalcs()"  matEndDate formControlName="end" placeholder="Krajnji datum">
+                <input (dateChange)="updateCalcs(); paginator.firstPage()" matStartDate formControlName="start" placeholder="Početni datum">
+                <input (dateChange)="updateCalcs(); paginator.firstPage()" matEndDate formControlName="end" placeholder="Krajnji datum">
               </mat-date-range-input>
               <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -126,7 +126,7 @@
                     (click)="download()">
               Preuzmi
             </button>
-            <mat-paginator class="flex-grow-1"
+            <mat-paginator class="flex-grow-1" #paginator
                           [length]="measurements?.length" pageSize="20"
                           [pageSizeOptions]="[5, 10, 25, 100]"
                           (page)="fetchNextPage($event)" />

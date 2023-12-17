@@ -73,7 +73,7 @@ export class StationDashboardComponent implements OnInit {
 		
 		this.range.value.end = danas;
 		this.range.value.start = tad;
-		this.reloadChart();
+		this.updateCalcs();
 	}
 
 	setWeek(){
@@ -84,7 +84,8 @@ export class StationDashboardComponent implements OnInit {
 
 		this.range.value.end = danas;
 		this.range.value.start = tad;	
-		this.reloadChart();
+
+		this.updateCalcs();
 	}
 
 	top_row : Latest[] = [];
@@ -94,7 +95,7 @@ export class StationDashboardComponent implements OnInit {
 
 	setField(l: Latest){
 		this.chart_field=l.field;
-		this.reloadChart();
+		this.updateCalcs();
 	}
 
 	public constructor(activatedRoute: ActivatedRoute, private readonly database: DatabaseService) {
@@ -140,19 +141,6 @@ export class StationDashboardComponent implements OnInit {
 		return Math.floor(vals);
 	}
 
-
-	reloadChart(): void{
-		if (!this.station || !this.measurements) return;
-
-		this.dps = []
-
-		for(let meas of this.measurements){
-			this.dps.push({x:meas.created_at,y:this.getData(meas, this.chart_field)});
-		}
-		this.chartOptions.data[0].dataPoints = this.dps
-		this.chart.render();
-	}
-
 	public ngOnInit() {
 		this.database.getStation(this.stationId).then(station => {
 			if (!station)
@@ -178,7 +166,7 @@ export class StationDashboardComponent implements OnInit {
 					this.keys = Object.keys(this.station.latest_measurement.properties).sort()
 					this.chart_field = this.keys[0];
 					this.fillTopRow();
-					this.reloadChart();
+					this.updateCalcs();
 				}
 			});
 		});
@@ -226,8 +214,15 @@ export class StationDashboardComponent implements OnInit {
 	}
 
 	updateCalcs(){
-		if(!this.range.value.end || !this.range.value.start) return;
-		this.reloadChart();
+		if(!this.range.value.end || !this.range.value.start) 
+			return;
+
+		this.dps = []
+		for(let meas of this.measurements ?? [])
+			this.dps.push({x:meas.created_at,y:this.getData(meas, this.chart_field)});
+		
+		this.chartOptions.data[0].dataPoints = this.dps
+		this.chart.render();
 	}
 
 	download() {
