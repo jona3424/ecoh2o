@@ -42,6 +42,15 @@
 <div class="d-flex my-2 mx-1">
   <div class="flex-grow-1 card bg-gradient-default shadow mr-1">
     <div class="card-body px-1">
+      <div class="card-header border-0" style="background-color: transparent;">
+        <div class="row align-items-center">
+          <div class="col">
+            <h6 style="color:#2180ab" class="text-uppercase text-muted ls-1 mb-1">grafik</h6>
+            <h2 class="mb-0" style="color:#73c546">Nivoa {{chart_field}} u periodu od {{range.value.start | date:"dd.MM.yyyy."}} do {{range.value.end | date:"dd.MM.yyyy."}}</h2>
+          </div>
+          
+        </div>
+      </div>
       <canvasjs-chart [options]="chartOptions" [styles]="{width: '100%', height:'360px'}" (chartInstance)="getChartInstance($event)"
                       class="chart" />
     </div>
@@ -100,7 +109,7 @@
           <div class="row align-items-center">
             <div class="col">
               <h6 class="text-uppercase text-muted ls-1 mb-1">Pregled</h6>
-              <h2 class="mb-0">Prethodnih mjerenja</h2>
+              <h2 class="mb-0">Prethodnih merenja</h2>
             </div>
             <div class="col text-right" style="display: flex;flex-direction: column;">
 
