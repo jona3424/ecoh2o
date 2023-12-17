@@ -21,8 +21,8 @@ class Latest{
 })
 export class StationDashboardComponent implements OnInit {
 	range = new FormGroup({
-		start: new FormControl<Date | null>(null),
-		end: new FormControl<Date | null>(null),
+		end: new FormControl<Date | null>(new Date(Date.now())),
+		start: new FormControl<Date | null>(new Date(Date.now()-7*24*60*60*1000)),
 	  });
 
 
@@ -55,10 +55,36 @@ export class StationDashboardComponent implements OnInit {
 
 	public subLatestMeas !: Measurement;
 
+	setMonth(){
+		var danas = new Date();
+		var tad = new Date();
+		tad.setMonth(tad.getMonth()-1);
+		
+		this.range.value.end = danas;
+		this.range.value.start = tad;
+		this.reloadChart();
+	}
+
+	setWeek(){
+		var danas = new Date();
+		var tad = new Date();
+		tad.setDate(tad.getDate()-7);
+
+
+		this.range.value.end = danas;
+		this.range.value.start = tad;	
+		this.reloadChart();
+	}
+
 	top_row : Latest[] = [];
 	keys : string[] = [];
 
 	chart_field: string = "ph";
+
+	setField(l: Latest){
+		this.chart_field=l.field;
+		this.reloadChart();
+	}
 
 	public constructor(activatedRoute: ActivatedRoute, private readonly database: DatabaseService) {
 		this.stationId = activatedRoute.snapshot.params.id;
@@ -183,5 +209,10 @@ export class StationDashboardComponent implements OnInit {
 			noviTR.increase = Math.round(noviTR.increase * 100) / 100
 			}this.top_row.push(noviTR);
 		}
+	}
+
+	updateCalcs(){
+		if(!this.range.value.end || !this.range.value.start) return;
+		this.reloadChart();
 	}
 }
