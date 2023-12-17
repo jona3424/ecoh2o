@@ -1,8 +1,16 @@
-<div class="logo-overlay">
-  <img src="assets/images/logo.png" class="logo" alt="logo">
+
+
+<div class="map-controls">
+  <div class="logo-overlay">
+    <img src="assets/images/logo.png" class="logo" alt="logo">
+  </div>
+  <div class="search-container">
+    <input type="text" id="google-map-search" #googleMapSearch placeholder="Pretrazi lokaciju">
+  </div>
 </div>
+
 <div *ngIf="stations != null" class="my-google-map">
-    <google-map [width]="null" [height]="null" [options]="mapOptions">
+    <google-map id="google-map" [width]="null" [height]="null" [options]="mapOptions">
 
         <map-marker *ngFor="let stanica of stations; let i = index" #marker="mapMarker" [position]="stanica.location" [icon]="stanica.icon"  (mapClick)="openInfoWindow(marker, i) ">
             <map-info-window> 

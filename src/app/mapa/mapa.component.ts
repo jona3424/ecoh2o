@@ -1,10 +1,9 @@
 
-import { Component, ViewEncapsulation, QueryList, ViewChildren } from '@angular/core';
+import { Component, ViewEncapsulation, QueryList, ViewChildren, ViewChild, ElementRef, NgZone } from '@angular/core';
 
-import {MapInfoWindow, MapMarker} from '@angular/google-maps'
+import {GoogleMap, MapInfoWindow, MapMarker} from '@angular/google-maps'
 import Station from '../models/station';
 import { DatabaseService } from '../services/database.service';
-import { Status } from '../models/measurement';
 
 @Component({
   selector: 'app-mapa',
@@ -16,10 +15,18 @@ import { Status } from '../models/measurement';
 export class MapaComponent {
 
 private open : number = -1;
+private lat : number = 44.7811458;
+private lng : number = 20.3697531;
+private map: google.maps.Map | undefined;
+
+
+
+@ViewChild('googleMapSearch', { static: true }) searchElementRef!: ElementRef;
+@ViewChild(GoogleMap) googleMap!: GoogleMap;
 
   mapOptions: google.maps.MapOptions = {
-    center: { lat: 44.7811458, lng: 20.3697531},
-    zoom : 14,
+    center: { lat: this.lat, lng: this.lng},
+    zoom : 12,
     styles: [
       {
           "featureType": "administrative",
@@ -128,13 +135,44 @@ private open : number = -1;
 
  stations : Station[] | undefined;
 
-	constructor(private readonly db: DatabaseService) {
+ constructor(
+    private readonly db: DatabaseService,
+    private ngZone: NgZone
+  ) {
+  }
 
-	}
+  ngOnInit(): void {
+    this.db.getStations().then(stations => {
+      this.stations = stations;
+    });
+  
+    this.initAutocomplete();
+  }
 
-	ngOnInit(): void {
-		this.db.getStations().then(stations => {
-			this.stations = stations;
-		});
-	}
+    
+    private autocomplete: google.maps.places.Autocomplete | null = null;
+
+    private initAutocomplete(): void {
+        if (this.autocomplete) {
+          google.maps.event.clearInstanceListeners(this.autocomplete);
+        }
+      
+        this.autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement);
+        this.autocomplete.addListener('place_changed', () => {
+            this.ngZone.run(() => {
+              if (!this.autocomplete) return;
+              const place = this.autocomplete.getPlace();
+              if (place.geometry?.viewport) {
+                // If the place has a viewport, use it to set the map bounds
+                this.googleMap.fitBounds(place.geometry.viewport);
+              } else if (place.geometry?.location) {
+                // If no viewport, just set the center and zoom in
+                this.googleMap.panTo(place.geometry.location);
+                this.googleMap.zoom = 15; // You can adjust the zoom level
+              }
+            });
+          });
+      }
+      
+
 }
