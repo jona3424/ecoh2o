@@ -2,3 +2,14 @@
     width: 25px;height: 24px;
     text-align: center;
 }
+.topRow{
+    cursor: pointer;
+}
+
+.topRow:hover{
+    background-color: #eee;
+}
+
+.activeTopRow{
+    background-color: #efefef;
+}
