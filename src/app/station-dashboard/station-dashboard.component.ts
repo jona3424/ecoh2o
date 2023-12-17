@@ -227,6 +227,21 @@ export class StationDashboardComponent implements OnInit {
 
 	updateCalcs(){
 		if(!this.range.value.end || !this.range.value.start) return;
+		
+		var danas = new Date();
+		var tadMjesec = new Date();
+		tadMjesec.setMonth(tadMjesec.getMonth()-1);
+
+		var tad = new Date();
+		tad.setDate(tad.getDate()-7);
+		
+		const dan = 1000*60*60*24;
+
+		this.clicked1 = Math.round(this.range.value.end.getTime()/dan) == Math.round(danas.getTime()/dan) 
+				&& Math.round(this.range.value.start.getTime()/dan) == Math.round(tadMjesec.getTime()/dan);	
+		this.clicked = Math.round(this.range.value.end.getTime()/dan) == Math.round(danas.getTime()/dan) 
+				&& Math.round(this.range.value.start.getTime()/dan) == Math.round(tad.getTime()/dan);	
+	
 		this.reloadChart();
 	}
 }
