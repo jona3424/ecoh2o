@@ -5,7 +5,7 @@
         <div class="row">
 
 
-          <div *ngFor="let topRow of top_row" class="col-xl-2 col-lg-6">
+          <div *ngFor="let topRow of top_row" class="col-xl-2 col-lg-6" (click)="setField(topRow)">
             <div class="card card-stats mb-4 mb-xl-0">
               <div class="card-body">
                 <div class="row">
@@ -42,22 +42,22 @@
                 <h6 class="text-uppercase text-light ls-1 mb-1">Overview</h6>
                 <h2 class="text-white mb-0">Sales value</h2>
               </div>
-              <div class="col">
+               <div class="col">
                 <ul class="nav nav-pills justify-content-end">
-                  <li class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales">
+                  <li class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales" (click)="setWeek()">
                     <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked===true}" data-toggle="tab" (click)="clicked=true;clicked1=false">
-                      <span class="d-none d-md-block">Month</span>
-                      <span class="d-md-none">M</span>
-                    </a>
-                  </li>
-                  <li class="nav-item" data-toggle="chart" data-target="#chart-sales">
-                    <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked1===true}" data-toggle="tab" (click)="clicked=false;clicked1=true">
-                      <span class="d-none d-md-block">Week</span>
+                      <span class="d-none d-md-block">Sedmica</span>
                       <span class="d-md-none">W</span>
                     </a>
                   </li>
+                  <li class="nav-item" data-toggle="chart" data-target="#chart-sales" (click)="setMonth()">
+                    <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked1===true}" data-toggle="tab" (click)="clicked=false;clicked1=true">
+                      <span class="d-none d-md-block">Mesec</span>
+                      <span class="d-md-none">M</span>
+                    </a>
+                  </li>
                 </ul>
-              </div>
+              </div> 
             </div>
           </div>
           <div class="card-body">
@@ -81,10 +81,10 @@
           </div>
           <div class="card-body">
             <mat-form-field>
-              <mat-label>Enter a date range</mat-label>
+              <mat-label>Raspon datuma</mat-label>
               <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-                <input matStartDate formControlName="start" placeholder="Start date">
-                <input matEndDate formControlName="end" placeholder="End date">
+                <input  matStartDate formControlName="start" placeholder="Pocetni datum">
+                <input (ngModelChange)="updateCalcs()"  matEndDate formControlName="end" placeholder="Krajnji datum">
               </mat-date-range-input>
               <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
