@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import Station from "../models/station";
 import { DatabaseService } from "../services/database.service";
@@ -66,13 +66,19 @@ export class StationDashboardComponent implements OnInit {
 
 	public subLatestMeas !: Measurement;
 
+
+	@ViewChild("startDatum")
+	private startDatum !: ElementRef;
+	@ViewChild("endDatum")
+	private endDatum !: ElementRef;
+
 	setMonth(){
 		var danas = new Date();
 		var tad = new Date();
 		tad.setMonth(tad.getMonth()-1);
 		
-		this.range.value.end = danas;
-		this.range.value.start = tad;
+		this.range.setValue({end: danas, start: tad});
+
 		this.reloadChart();
 	}
 
@@ -82,8 +88,8 @@ export class StationDashboardComponent implements OnInit {
 		tad.setDate(tad.getDate()-7);
 
 
-		this.range.value.end = danas;
-		this.range.value.start = tad;	
+		this.range.setValue({end: danas, start: tad});
+
 		this.reloadChart();
 	}
 
