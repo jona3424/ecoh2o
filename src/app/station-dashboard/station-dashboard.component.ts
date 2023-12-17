@@ -5,6 +5,7 @@ import { DatabaseService } from "../services/database.service";
 import Measurement from "../models/measurement";
 import { FormControl, FormGroup } from "@angular/forms";
 import allowedRanges from "src/allowed_ranges";
+import { PageEvent } from "@angular/material/paginator";
 
 
 class Latest{
@@ -51,6 +52,16 @@ export class StationDashboardComponent implements OnInit {
 			end = new Date();
 
 		return this.allMeasurements.filter(measurement => measurement.created_at >= start! && measurement.created_at <= end!);
+	}
+
+	public lowValue: number = 0;
+	public highValue: number = 10;
+
+	public fetchNextPage(event: PageEvent): PageEvent {
+		this.lowValue = event.pageIndex * event.pageSize;
+		this.highValue = this.lowValue + event.pageSize;
+		
+		return event;
 	}
 
 	public subLatestMeas !: Measurement;
@@ -124,6 +135,9 @@ export class StationDashboardComponent implements OnInit {
 			this.station = station;
 			this.database.getMeasurements(station).then(measurements => {
 				this.allMeasurements = measurements;
+				this.lowValue = 0;
+				this.highValue = this.allMeasurements.length;
+				
 				if (this.station){
 					this.station.latest_measurement = this.allMeasurements[this.allMeasurements.length - 1];
 
