@@ -145,6 +145,19 @@ export class StationDashboardComponent implements OnInit {
 		return Math.floor(vals);
 	}
 
+
+	reloadChart(): void{
+		if (!this.station || !this.measurements) return;
+
+		this.dps = []
+
+		for(let meas of this.measurements){
+			this.dps.push({x:meas.created_at,y:this.getData(meas, this.chart_field)});
+		}
+		this.chartOptions.data[0].dataPoints = this.dps
+		this.chart.render();
+	}
+
 	public ngOnInit() {
 		this.database.getStation(this.stationId).then(station => {
 			if (!station)
