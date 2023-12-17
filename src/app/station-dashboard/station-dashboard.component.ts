@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild,HostListener } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import Station from "../models/station";
 import { DatabaseService } from "../services/database.service";
@@ -25,6 +25,24 @@ export class StationDashboardComponent implements OnInit {
 		end: new FormControl<Date | null>(new Date(Date.now())),
 		start: new FormControl<Date | null>(new Date(Date.now()-7*24*60*60*1000)),
 	  });
+
+	
+	@HostListener('swipeleft', ['$event'])
+  	onSwipeLeft(event: any) {
+    this.scrollContainer(-100); // Adjust scroll value as needed
+  }
+
+  @HostListener('swiperight', ['$event'])
+  	onSwipeRight(event: any) {
+    this.scrollContainer(100); // Adjust scroll value as needed
+  }
+
+  private scrollContainer(scrollValue: number) {
+    const container = document.querySelector('.scroll-container');
+    if (container) {
+      container.scrollLeft += scrollValue;
+    }
+  }
 
 
 	public datasets: any;
