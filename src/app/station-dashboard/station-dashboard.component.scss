@@ -28,3 +28,53 @@
 .chart {
     height: 360px;
 }
+
+
+
+.scroll-container {
+    flex-wrap: nowrap;
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* For smooth scrolling on touch devices */
+  }
+  
+  
+  
+  .cardTop {
+    padding: 10px;
+    flex: 0 0 auto; 
+    display: inline-block;
+    width: 60vh;
+    margin: 5px;/* Flexbox settings for the cards */
+    /* Add more styling for your cards */
+  }
+  
+  
+  
+  @media (max-width: 576px) {
+    .card-stats {
+      min-width: 120px; /* Smaller min-width for small screens */
+      /* Adjust font-sizes, paddings, etc. as needed */
+    }
+  }
+  
+  /* Medium devices (tablets, 768px and up) */
+  @media (max-width: 768px) {
+    .card-stats {
+      /* Adjust styles for medium-sized devices */
+    }
+  }
+  
+  /* Large devices (desktops, 992px and up) */
+  @media (max-width: 992px) {
+    .card-stats {
+      /* Adjust styles for large devices */
+    }
+  }
+  
+  /* Extra large devices (large desktops, 1200px and up) */
+  @media (max-width: 1200px) {
+    .card-stats {
+      /* Adjust styles for extra-large devices */
+    }
+  }
