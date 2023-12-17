@@ -15,6 +15,7 @@ import { MatFormFieldModule  } from "@angular/material/form-field";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
 import paginatorTranslations from "../paginator_translations";
+import { MatButtonModule } from "@angular/material/button";
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import paginatorTranslations from "../paginator_translations";
     MatFormFieldModule,
     FormsModule,
     ReactiveFormsModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatButtonModule
   ],
   providers: [
     { 
